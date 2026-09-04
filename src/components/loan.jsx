@@ -10,9 +10,10 @@ const LoanSection = styled.section`
   margin: 60px 0;
 `;
 
-const SectionTitle = styled.h2`
+const SectionTitle = styled.h5`
   font-size: 2.5rem;
-  font-weight: bold;
+   
+
   margin-bottom: 15px;
   text-align: center;
   font-family: "Montserrat", sans-serif;

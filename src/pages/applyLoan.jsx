@@ -235,16 +235,23 @@ const ApplyLoanPage = () => {
 
   const onFileSelected = (e, field, apiField) => {
     const file = e.target.files[0];
-    if (file) {
-      setUploadLoading(true);
-      uploadFileToCloudinary(file, null, (url) => {
-        setFormData((prev) => ({
-          ...prev,
-          [apiField]: url,
-        }));
-        setUploadLoading(false);
-      }, setUploadLoading);
+    if (!file) return;
+
+    const isImage = file.type.startsWith("image/");
+    if (!isImage) {
+      alert("Only image files are allowed for this upload.");
+      e.target.value = "";
+      return;
     }
+
+    setUploadLoading(true);
+    uploadFileToCloudinary(file, null, (url) => {
+      setFormData((prev) => ({
+        ...prev,
+        [apiField]: url,
+      }));
+      setUploadLoading(false);
+    }, setUploadLoading);
   };
 
   const validateStep = (step) => {
@@ -541,7 +548,7 @@ const ApplyLoanPage = () => {
                             <input
                               type="file"
                               id="idFile"
-                              accept="image/*,application/pdf"
+                              accept="image/*"
                               onChange={(e) =>
                                 onFileSelected(e, "idFile", "idImageUrl")
                               }
@@ -556,7 +563,7 @@ const ApplyLoanPage = () => {
                             ) : (
                               <div>
                                 <p>📄 Click to upload ID document</p>
-                                <small>Supported: Image or PDF</small>
+                                <small>Supported: Images only</small>
                               </div>
                             )}
                           </FileUploadArea>
@@ -572,7 +579,7 @@ const ApplyLoanPage = () => {
                             <input
                               type="file"
                               id="billFile"
-                              accept="image/*,application/pdf"
+                              accept="image/*"
                               onChange={(e) =>
                                 onFileSelected(e, "billFile", "utilityBillImageUrl")
                               }
@@ -587,7 +594,7 @@ const ApplyLoanPage = () => {
                             ) : (
                               <div>
                                 <p>📋 Click to upload utility bill</p>
-                                <small>Proof of residence required</small>
+                                <small>Image proof of residence required</small>
                               </div>
                             )}
                           </FileUploadArea>

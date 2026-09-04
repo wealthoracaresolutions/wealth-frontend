@@ -1,20 +1,34 @@
-const handleFileUpload = (file, path, onUpload,setLoadingState) => {
+const handleFileUpload = (file, path, onUpload, setLoadingState) => {
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("upload_preset", "healthsupport users"); // Replace with your upload preset
-  formData.append("cloud_name", "dhvl53iga"); // Replace with your cloud name
-  setLoadingState(true)
-  fetch("https://api.cloudinary.com/v1_1/dhvl53iga/image/upload", {
+
+  // Unsigned preset created in the new Cloudinary account.
+  // Must match the preset name exactly in Cloudinary.
+  formData.append("upload_preset", "wealthoracaresolutions");
+
+  setLoadingState(true);
+
+  fetch("https://api.cloudinary.com/v1_1/dszf8uvsn/image/upload", {
     method: "POST",
     body: formData,
   })
-    .then((res) => res.json())
-    
-    .then((data) => {
-      setLoadingState(false)
-      onUpload(data.secure_url); // The uploaded image URL
+    .then(async (res) => {
+      const data = await res.json();
+      if (!res.ok || !data.secure_url) {
+        throw new Error(
+          data.error?.message || "Cloudinary did not return a public URL"
+        );
+      }
+      return data;
     })
-    .catch((err) => {console.error("Error uploading image:", err);setLoadingState(false)});
+    .then((data) => {
+      setLoadingState(false);
+      onUpload(data.secure_url);
+    })
+    .catch((err) => {
+      console.error("Error uploading image:", err);
+      setLoadingState(false);
+    });
 };
 
 export default handleFileUpload;

@@ -132,8 +132,9 @@ const LoanDashboard = () => {
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [paymentData, setPaymentData] = useState({
     amountPaid: "",
-    paymentMethod: "bank_transfer",
+    paymentMethod: "bank",
     transactionId: "",
+    bankDetails: { bankName: "" },
   });
 
   useEffect(() => {
@@ -149,7 +150,17 @@ const LoanDashboard = () => {
     fetchData(
       `${developmentApiEntryPoint}/loans/my-loans`,
       (data) => {
-        setLoans(data.result || []);
+        setLoans(
+          (data.result || []).map((loan) => ({
+            ...loan,
+            repaymentDetails: {
+              amountRepaid: 0,
+              remainingBalance: 0,
+              paymentHistory: [],
+              ...(loan.repaymentDetails || {}),
+            },
+          }))
+        );
         setLoading(false);
       },
       (message) => {
@@ -192,6 +203,9 @@ const LoanDashboard = () => {
     if (!paymentData.transactionId) {
       errors.push("Transaction ID is required");
     }
+    if (paymentData.paymentMethod === "bank" && !paymentData.bankDetails.bankName) {
+      errors.push("Bank name is required for bank payments");
+    }
 
     if (errors.length > 0) {
       alert(errors.join("\n"));
@@ -207,8 +221,9 @@ const LoanDashboard = () => {
         setShowPaymentModal(false);
         setPaymentData({
           amountPaid: "",
-          paymentMethod: "bank_transfer",
+          paymentMethod: "bank",
           transactionId: "",
+          bankDetails: { bankName: "" },
         });
         fetchUserLoans();
       },
@@ -381,7 +396,7 @@ const LoanDashboard = () => {
                           <DetailRow>
                             <span className="label">Remaining Balance:</span>
                             <span className="value" style={{ color: "#e74c3c" }}>
-                              $" "}
+                              $
                               {loan.repaymentDetails.remainingBalance.toLocaleString()}
                             </span>
                           </DetailRow>
@@ -459,7 +474,7 @@ const LoanDashboard = () => {
           {selectedLoan && (
             <>
               <Alert variant="info">
-                <strong>Remaining Balance:</strong> $" "}
+                <strong>Remaining Balance:</strong> $
                 {selectedLoan.repaymentDetails.remainingBalance.toLocaleString()}
               </Alert>
 
@@ -494,11 +509,27 @@ const LoanDashboard = () => {
                       })
                     }
                   >
-                    <option value="bank_transfer">Bank Transfer</option>
-                    <option value="wallet_transfer">Wallet Transfer</option>
+                    <option value="bank">Bank</option>
+                    <option value="crypto">Crypto</option>
                     <option value="cash">Cash Payment</option>
                   </Form.Select>
                 </Form.Group>
+
+                {paymentData.paymentMethod === "bank" && (
+                  <Form.Group className="mb-3">
+                    <Form.Label>Bank Name</Form.Label>
+                    <Form.Control
+                      value={paymentData.bankDetails.bankName}
+                      onChange={(e) =>
+                        setPaymentData({
+                          ...paymentData,
+                          bankDetails: { bankName: e.target.value },
+                        })
+                      }
+                      placeholder="Enter bank name"
+                    />
+                  </Form.Group>
+                )}
 
                 <Form.Group className="mb-3">
                   <Form.Label>Transaction ID</Form.Label>
@@ -585,19 +616,19 @@ const LoanDashboard = () => {
                   <DetailRow>
                     <span className="label">Bank Name:</span>
                     <span className="value">
-                      {selectedLoan.bankDetails.bankName}
+                      {selectedLoan.bankDetails?.bankName || "N/A"}
                     </span>
                   </DetailRow>
                   <DetailRow>
                     <span className="label">Account Holder:</span>
                     <span className="value">
-                      {selectedLoan.bankDetails.accountHolderName}
+                      {selectedLoan.bankDetails?.accountHolderName || "N/A"}
                     </span>
                   </DetailRow>
                   <DetailRow>
                     <span className="label">Account Number:</span>
                     <span className="value">
-                      {selectedLoan.bankDetails.accountNumber}
+                      {selectedLoan.bankDetails?.accountNumber || "N/A"}
                     </span>
                   </DetailRow>
                 </>

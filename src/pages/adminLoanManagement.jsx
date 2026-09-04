@@ -96,6 +96,47 @@ const getStatusColor = (status) => {
   }
 };
 
+const getDocumentUrl = (url) =>
+  typeof url === "string" && url.startsWith("https://res.cloudinary.com/")
+    ? url
+    : null;
+
+const DocumentPreview = ({ url, alt }) => {
+  const documentUrl = getDocumentUrl(url);
+  return documentUrl ? (
+    <a
+      href={documentUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{
+        display: "inline-block",
+        background: "#f5f7fb",
+        border: "1px solid #dfe7f1",
+        borderRadius: "10px",
+        padding: "6px",
+        boxShadow: "0 4px 12px rgba(15, 23, 42, 0.08)",
+      }}
+    >
+      <img
+        src={documentUrl}
+        alt={alt}
+        style={{
+          display: "block",
+          width: "220px",
+          maxWidth: "100%",
+          height: "150px",
+          objectFit: "cover",
+          borderRadius: "8px",
+          border: "1px solid #e6edf7",
+          backgroundColor: "#eef3fb",
+        }}
+      />
+    </a>
+  ) : (
+    <span style={{ color: "#7a7a7a", fontStyle: "italic" }}>Unavailable</span>
+  );
+};
+
 const AdminLoanManagement = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("support_token");
@@ -108,6 +149,7 @@ const AdminLoanManagement = () => {
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [showDisburseModal, setShowDisburseModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [showEmailModal, setShowEmailModal] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
 
   const [reviewData, setReviewData] = useState({
@@ -119,6 +161,11 @@ const AdminLoanManagement = () => {
 
   const [disburseData, setDisburseData] = useState({
     transactionId: "",
+  });
+
+  const [emailData, setEmailData] = useState({
+    subject: "Update on your loan application",
+    message: "",
   });
 
   useEffect(() => {
@@ -188,6 +235,44 @@ const AdminLoanManagement = () => {
   const handleShowDetailsModal = (loan) => {
     setSelectedLoan(loan);
     setShowDetailsModal(true);
+  };
+
+  const handleShowEmailModal = (loan) => {
+    setSelectedLoan(loan);
+    setEmailData({
+      subject: `Update on your loan application (${loan.status || "pending"})`,
+      message: "",
+    });
+    setShowEmailModal(true);
+  };
+
+  const handleSendApplicantEmail = () => {
+    if (!selectedLoan) {
+      alert("Please select a loan applicant first.");
+      return;
+    }
+
+    if (!emailData.subject.trim() || !emailData.message.trim()) {
+      alert("Please provide both a subject and a message before sending.");
+      return;
+    }
+
+    setActionLoading(true);
+    fetchData(
+      `${developmentApiEntryPoint}/loans/admin/send-email/${selectedLoan._id}`,
+      (data) => {
+        setActionLoading(false);
+        alert("Applicant email sent successfully!");
+        setShowEmailModal(false);
+      },
+      (message) => {
+        setActionLoading(false);
+        alert("Error: " + message);
+      },
+      "POST",
+      emailData,
+      token
+    );
   };
 
   const handleReviewLoan = () => {
@@ -394,6 +479,13 @@ const AdminLoanManagement = () => {
                                 Disburse
                               </ActionButton>
                             )}
+                            <ActionButton
+                              variant="primary"
+                              size="sm"
+                              onClick={() => handleShowEmailModal(loan)}
+                            >
+                              Email
+                            </ActionButton>
                           </td>
                         </tr>
                       ))}
@@ -455,6 +547,13 @@ const AdminLoanManagement = () => {
                             >
                               Review
                             </ActionButton>
+                            <ActionButton
+                              variant="primary"
+                              size="sm"
+                              onClick={() => handleShowEmailModal(loan)}
+                            >
+                              Email
+                            </ActionButton>
                           </td>
                         </tr>
                       ))}
@@ -499,9 +598,11 @@ const AdminLoanManagement = () => {
                           <td>{loan.userId?.name || "N/A"}</td>
                           <td>${loan.loanAmount.toLocaleString()}</td>
                           <td>
-                            {new Date(
-                              loan.adminReview.reviewDate
-                            ).toLocaleDateString()}
+                            {loan.adminReview?.reviewDate
+                              ? new Date(
+                                  loan.adminReview.reviewDate
+                                ).toLocaleDateString()
+                              : "N/A"}
                           </td>
                           <td>
                             <ActionButton
@@ -517,6 +618,13 @@ const AdminLoanManagement = () => {
                               onClick={() => handleShowDisburseModal(loan)}
                             >
                               Disburse
+                            </ActionButton>
+                            <ActionButton
+                              variant="primary"
+                              size="sm"
+                              onClick={() => handleShowEmailModal(loan)}
+                            >
+                              Email
                             </ActionButton>
                           </td>
                         </tr>
@@ -562,9 +670,11 @@ const AdminLoanManagement = () => {
                           <td>{loan.userId?.name || "N/A"}</td>
                           <td>${loan.loanAmount.toLocaleString()}</td>
                           <td>
-                            {new Date(
-                              loan.disbursalDetails.disbursalDate
-                            ).toLocaleDateString()}
+                            {loan.disbursalDetails?.disbursalDate
+                              ? new Date(
+                                  loan.disbursalDetails.disbursalDate
+                                ).toLocaleDateString()
+                              : "N/A"}
                           </td>
                           <td>
                             <ActionButton
@@ -598,6 +708,30 @@ const AdminLoanManagement = () => {
                 <strong>Loan Amount:</strong> ${" "}
                 {selectedLoan.loanAmount.toLocaleString()}
               </Alert>
+
+              <h6 style={{ color: "#1abc9c", marginBottom: "15px" }}>
+                Applicant Receiving Details
+              </h6>
+              {selectedLoan.bankDetails ? (
+                <Table striped size="sm">
+                  <tbody>
+                    <tr><td><strong>Method:</strong></td><td>Bank</td></tr>
+                    <tr><td><strong>Bank Name:</strong></td><td>{selectedLoan.bankDetails?.bankName || "N/A"}</td></tr>
+                    <tr><td><strong>Account Holder:</strong></td><td>{selectedLoan.bankDetails?.accountHolderName || "N/A"}</td></tr>
+                    <tr><td><strong>Account Number:</strong></td><td>{selectedLoan.bankDetails?.accountNumber || "N/A"}</td></tr>
+                  </tbody>
+                </Table>
+              ) : selectedLoan.walletAddress ? (
+                <Table striped size="sm">
+                  <tbody>
+                    <tr><td><strong>Method:</strong></td><td>Crypto</td></tr>
+                    <tr><td><strong>Coin:</strong></td><td>{selectedLoan.walletAddress?.coinType || "N/A"}</td></tr>
+                    <tr><td><strong>Wallet Address:</strong></td><td>{selectedLoan.walletAddress?.address || "N/A"}</td></tr>
+                  </tbody>
+                </Table>
+              ) : (
+                <Alert variant="warning">No bank or crypto receiving details were provided.</Alert>
+              )}
 
               <Form>
                 <Form.Group className="mb-3">
@@ -636,7 +770,7 @@ const AdminLoanManagement = () => {
                     </Form.Group>
 
                     <Form.Group className="mb-3">
-                      <Form.Label>Disbursal Method</Form.Label>
+                      <Form.Label>Admin Disbursal Method</Form.Label>
                       <Form.Select
                         value={reviewData.disbursalMethod}
                         onChange={(e) =>
@@ -762,6 +896,75 @@ const AdminLoanManagement = () => {
         </Modal.Footer>
       </Modal>
 
+      {/* Email Modal */}
+      <Modal
+        show={showEmailModal}
+        onHide={() => setShowEmailModal(false)}
+        size="lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>✉️ Send Email to Loan Applicant</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedLoan && (
+            <>
+              <Alert variant="info">
+                Sending to: <strong>{selectedLoan.userId?.name || "Applicant"}</strong> ({selectedLoan.userId?.email || "No email"})
+              </Alert>
+
+              <Form>
+                <Form.Group className="mb-3">
+                  <Form.Label>Subject</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={emailData.subject}
+                    onChange={(e) =>
+                      setEmailData({ ...emailData, subject: e.target.value })
+                    }
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Message</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={6}
+                    value={emailData.message}
+                    onChange={(e) =>
+                      setEmailData({ ...emailData, message: e.target.value })
+                    }
+                    placeholder="Write the message to send to the applicant..."
+                  />
+                </Form.Group>
+              </Form>
+            </>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setShowEmailModal(false)}
+            disabled={actionLoading}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            onClick={handleSendApplicantEmail}
+            disabled={actionLoading}
+          >
+            {actionLoading ? (
+              <>
+                <Spinner animation="border" size="sm" className="me-2" />
+                Sending...
+              </>
+            ) : (
+              "Send Email"
+            )}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       {/* Details Modal */}
       <Modal
         show={showDetailsModal}
@@ -842,13 +1045,10 @@ const AdminLoanManagement = () => {
                       <strong>ID Document:</strong>
                     </td>
                     <td>
-                      <a
-                        href={selectedLoan.applicant.idImageUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        View
-                      </a>
+                      <DocumentPreview
+                        url={selectedLoan.applicant.idImageUrl}
+                        alt="Applicant ID document"
+                      />
                     </td>
                   </tr>
                   <tr>
@@ -856,49 +1056,76 @@ const AdminLoanManagement = () => {
                       <strong>Utility Bill:</strong>
                     </td>
                     <td>
-                      <a
-                        href={selectedLoan.applicant.utilityBillImageUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        View
-                      </a>
+                      <DocumentPreview
+                        url={selectedLoan.applicant.utilityBillImageUrl}
+                        alt="Applicant utility bill"
+                      />
                     </td>
                   </tr>
                 </tbody>
               </Table>
 
-              <h6
-                style={{
-                  color: "#1abc9c",
-                  marginBottom: "15px",
-                  marginTop: "20px",
-                }}
-              >
-                Bank Details
-              </h6>
-              <Table striped size="sm">
-                <tbody>
-                  <tr>
-                    <td>
-                      <strong>Bank Name:</strong>
-                    </td>
-                    <td>{selectedLoan.bankDetails.bankName}</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <strong>Account Holder:</strong>
-                    </td>
-                    <td>{selectedLoan.bankDetails.accountHolderName}</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <strong>Account Number:</strong>
-                    </td>
-                    <td>{selectedLoan.bankDetails.accountNumber}</td>
-                  </tr>
-                </tbody>
-              </Table>
+              {selectedLoan.bankDetails ? (
+                <>
+                  <h6
+                    style={{
+                      color: "#1abc9c",
+                      marginBottom: "15px",
+                      marginTop: "20px",
+                    }}
+                  >
+                    Bank Details
+                  </h6>
+                  <Table striped size="sm">
+                    <tbody>
+                      <tr>
+                        <td>
+                          <strong>Bank Name:</strong>
+                        </td>
+                        <td>{selectedLoan.bankDetails?.bankName || "N/A"}</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong>Account Holder:</strong>
+                        </td>
+                        <td>{selectedLoan.bankDetails?.accountHolderName || "N/A"}</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong>Account Number:</strong>
+                        </td>
+                        <td>{selectedLoan.bankDetails?.accountNumber || "N/A"}</td>
+                      </tr>
+                    </tbody>
+                  </Table>
+                </>
+              ) : selectedLoan.walletAddress ? (
+                <>
+                  <h6
+                    style={{
+                      color: "#1abc9c",
+                      marginBottom: "15px",
+                      marginTop: "20px",
+                    }}
+                  >
+                    Crypto Wallet Details
+                  </h6>
+                  <Table striped size="sm">
+                    <tbody>
+                      <tr>
+                        <td><strong>Coin:</strong></td>
+                        <td>{selectedLoan.walletAddress?.coinType || "N/A"}</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Wallet Address:</strong></td>
+                        <td>{selectedLoan.walletAddress?.address || "N/A"}</td>
+                      </tr>
+                    </tbody>
+                  </Table>
+                </>
+              ) : (
+                <Alert variant="warning">No bank or crypto details provided</Alert>
+              )}
             </>
           )}
         </Modal.Body>

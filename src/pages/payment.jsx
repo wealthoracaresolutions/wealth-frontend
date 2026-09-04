@@ -182,7 +182,6 @@ const PaymentsPage = () => {
       inputErrors.push("PLease select a means of payment to proceed")
     }
     if(!selectedCoin&& (means!=="bank")){
-      alert(means)
       inputErrors.push("A coin must be selected")
 
 
