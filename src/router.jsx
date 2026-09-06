@@ -37,6 +37,8 @@ import CarRewardsPage from "./pages/carRewards";
 import ApplyLoanPage from "./pages/applyLoan";
 import LoanDashboard from "./pages/loanDashboard";
 import AdminLoanManagement from "./pages/adminLoanManagement";
+import TradingSignals from "./pages/tradingSignals";
+import AdminTradingSignals from "./pages/adminTradingSignals";
 
 
 const RoutingComponent = () => {
@@ -49,6 +51,7 @@ const RoutingComponent = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/travelrequest" element={<TravelRequest />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/trading-signals" element={<TradingSignals />} />
         <Route path="/dashboard/medicalsupport" element={<MedicalSupportDashboard />} />
         <Route path="/dashboard/covid" element={<CovidDashboard />} />
         <Route path="/dashboard/contribution" element={<CashContributionDashboardPage />} />
@@ -86,6 +89,7 @@ const RoutingComponent = () => {
         <Route path="/apply-loan" element={<ApplyLoanPage />} />
         <Route path="/loan-dashboard" element={<LoanDashboard />} />
         <Route path="/admin/loans" element={<AdminLoanManagement />} />
+        <Route path="/admin/trading-signals" element={<AdminTradingSignals />} />
       </Routes>
     </Router>
   );

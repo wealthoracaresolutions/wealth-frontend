@@ -75,7 +75,7 @@ const PendingDeposits = () => {
           <div className="col-lg-6 px-5 text-end">
             <small>
               <i className="fa fa-envelope text-primary me-2"></i>
-              info@healthsupport.com
+              info@Wealthoracaresolutions.com
             </small>
           </div>
         </div>

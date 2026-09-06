@@ -80,6 +80,7 @@ const ButtonGroup = styled.div`
 const Dashboard = () => {
   const navigate = useNavigate()
   const [stats,setStats]= useState({})
+  const [latestSignal, setLatestSignal] = useState(null)
   console.log(stats)
   const userIsLogged= useSelector(selectIsLogged);
   const userDetails=useSelector(selectUserDetails);
@@ -103,6 +104,14 @@ const Dashboard = () => {
         {},
         token
 
+      )
+      fetchData(
+        `${developmentApiEntryPoint}/trading-signals`,
+        (data) => setLatestSignal(data.result[0] || null),
+        (message) => console.log(message),
+        "GET",
+        undefined,
+        token
       )
     }
     
@@ -236,6 +245,23 @@ const Dashboard = () => {
 
       {/* Quick Links Section */}
       <Container className="cardContent">
+        <Card className="mb-4 shadow-sm border-0">
+          <Card.Body>
+            <div className="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
+              <div>
+                <p className="text-uppercase text-muted mb-1">Market updates</p>
+                <h3 className="mb-1">Latest trading signal</h3>
+              </div>
+              <Button as={Link} to="/trading-signals" variant="success">More trading signals</Button>
+            </div>
+            {latestSignal ? (
+              <Row className="align-items-center g-3">
+                <Col md={4}><img src={latestSignal.imageUrl} alt={latestSignal.title} className="img-fluid rounded" style={{ maxHeight: "220px", width: "100%", objectFit: "cover" }} /></Col>
+                <Col md={8}><h4>{latestSignal.title}</h4><p className="text-muted">{latestSignal.description}</p><small className="text-muted">Posted {new Date(latestSignal.createdAt).toLocaleString()}</small></Col>
+              </Row>
+            ) : <p className="text-muted mb-0">No trading signals have been posted yet.</p>}
+          </Card.Body>
+        </Card>
         <QuickLinksContainer>
           <QuickLinksTitle>Quick Links - Manage Your Accounts</QuickLinksTitle>
           <ButtonGroup>

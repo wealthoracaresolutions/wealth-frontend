@@ -17,7 +17,9 @@ import certificate from "../assets/Jonathan Crimson.png";
 import carGift from "../assets/car-gift.jpg";
 import carAward from "../assets/car-award.jpg";
 import { Image, Carousel } from "react-bootstrap";
+import Accordion from "react-bootstrap/Accordion";
 import { Link } from "react-router-dom";
+import { faqs } from "../updateText";
 
 const Container = styled.div`
   width: 100vw;
@@ -262,6 +264,54 @@ const LearnMoreLink = styled(Link)`
   }
 `;
 
+const FAQSection = styled.section`
+  width: min(960px, calc(100% - 32px));
+  margin: 56px auto 64px;
+
+  h2 {
+    margin: 0 0 12px;
+    color: #1f2937;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    text-align: center;
+  }
+
+  > p {
+    max-width: 680px;
+    margin: 0 auto 28px;
+    color: #667085;
+    line-height: 1.7;
+    text-align: center;
+  }
+
+  .accordion-item {
+    margin-bottom: 12px;
+    overflow: hidden;
+    border: 1px solid #e4e7ec;
+    border-radius: 10px;
+    box-shadow: 0 5px 18px rgba(16, 24, 40, 0.06);
+  }
+
+  .accordion-button {
+    padding: 18px 20px;
+    color: #243447;
+    font-weight: 700;
+    background: #fff;
+  }
+
+  .accordion-button:not(.collapsed) {
+    color: #147d68;
+    background: #f2fbf8;
+    box-shadow: none;
+  }
+
+  .accordion-body {
+    padding: 0 20px 20px;
+    color: #5f6b76;
+    line-height: 1.7;
+    background: #f2fbf8;
+  }
+`;
+
 const Home = () => {
   useEffect(() => {
     animatedClasses.forEach((className) => {
@@ -288,7 +338,7 @@ const Home = () => {
         <Video src={backgroundVid} autoPlay loop muted />
         <Shade />
         <Content>
-          <h1 className="fadeinUp">Welcome to HealthSupport</h1>
+          <h1 className="fadeinUp">Welcome to Wealthoracaresolutions</h1>
           <p>
             {completeText.substr(0, char)}
             <Cursor>|</Cursor>
@@ -368,6 +418,20 @@ const Home = () => {
         </RewardCarousel>
       </CarRewardsSection>
       <Feedback />
+      <FAQSection id="faqs">
+        <h2>Frequently Asked Questions</h2>
+        <p>
+          Find clear answers about our services, applications, support, and eligibility.
+        </p>
+        <Accordion alwaysOpen>
+          {faqs.map(({ q, a }, index) => (
+            <Accordion.Item eventKey={String(index)} key={q}>
+              <Accordion.Header>{q}</Accordion.Header>
+              <Accordion.Body>{a}</Accordion.Body>
+            </Accordion.Item>
+          ))}
+        </Accordion>
+      </FAQSection>
       <Footer />
     </Container>
   );

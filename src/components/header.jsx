@@ -92,7 +92,7 @@ const navigate=useNavigate()
             </Highlight>
             <span style={{ fontWeight: 600, color: "rgb(0,0,0,0.4)" }}>
               {" "}
-              info@healthsupport
+              info@Wealthoracaresolutions
             </span>
           </span>
         </ContactDetailsCon>
@@ -106,7 +106,7 @@ const navigate=useNavigate()
 
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
-          <Navbar.Brand href="/home">HealthSupport</Navbar.Brand>
+          <Navbar.Brand href="/home">Wealthoracaresolutions</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">

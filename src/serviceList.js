@@ -14,6 +14,7 @@ return   [
   {
     title: "Investment plans",
     subs: [
+      
       "Real estates",
       "fixed deposit",
       "crypto currency",
@@ -22,8 +23,13 @@ return   [
       "retirement",
       "truck",
       "crude oil",
+
     ],
     href: isLogged?"/invest":"/register",
+  },
+  {
+    title:"Loans",
+    href:isLogged?"/loan-dashboard":"/register"
   },
 
   {

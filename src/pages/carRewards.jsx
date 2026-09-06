@@ -202,7 +202,7 @@ const CarRewardsPage = () => {
             <span>Car reward initiative</span>
             <h1>Rewarding the growth behind the vision.</h1>
             <p>
-              At HealthSupport, our best investors don’t just receive returns — they become part of a
+              At Wealthoracaresolutions, our best investors don’t just receive returns — they become part of a
               tradition of excellence. Through our new policy, standout investors are celebrated with premium
               car gifts that reflect the strength of their trust and contribution.
             </p>

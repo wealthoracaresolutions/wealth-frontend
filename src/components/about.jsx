@@ -98,7 +98,7 @@ const About = () => {
       <TextContainer id="about-text">
         <Title>About Us</Title>
         <Description>
-          At <Highlight>HealthSupport</Highlight>, we are dedicated to enhancing your well-being and financial stability.
+          At <Highlight>Wealthoracaresolutions</Highlight>, we are dedicated to enhancing your well-being and financial stability.
           Our wide range of services, including <Highlight>medical support</Highlight>, <Highlight>investment plans</Highlight>, 
           and <Highlight>health insurance</Highlight>, ensures that you are covered in every aspect of life.
         </Description>

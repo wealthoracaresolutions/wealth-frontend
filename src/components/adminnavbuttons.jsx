@@ -19,6 +19,7 @@ const NavButtons = () => {
     </Button>
     <Button variant="secondary" href="/admin/payments">Payments</Button>
     <Button variant="secondary" href="/admin/loans">Loans</Button>
+    <Button variant="secondary" href="/admin/trading-signals">Trading Signals</Button>
     <Button variant="secondary" href="/admin/trips">trips</Button>
     <Button variant="secondary" href="/admin/pendingwithdrawals">
       Pending Withdrawals

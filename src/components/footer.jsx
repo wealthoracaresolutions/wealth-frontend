@@ -172,7 +172,7 @@ const Footer = () => {
             className="text-decoration-none"
             style={{ color: "#1abc9c" }}
           >
-            Healthsupport tech team
+            Wealthoracaresolutions tech team
           </a>
           . All rights reserved.
         </p>

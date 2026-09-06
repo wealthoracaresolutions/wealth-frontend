@@ -6,9 +6,9 @@ import { initializeApp } from "firebase/app";
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyB4bWys3atCjlPJBeLx1uKy3Yaf-GNxOkM",
-  authDomain: "healthsupport-f5720.firebaseapp.com",
-  projectId: "healthsupport-f5720",
-  storageBucket: "healthsupport-f5720.firebasestorage.app",
+  authDomain: "Wealthoracaresolutions-f5720.firebaseapp.com",
+  projectId: "Wealthoracaresolutions-f5720",
+  storageBucket: "Wealthoracaresolutions-f5720.firebasestorage.app",
   messagingSenderId: "801597083107",
   appId: "1:801597083107:web:c4931efdd55ecc409424d6",
 };
