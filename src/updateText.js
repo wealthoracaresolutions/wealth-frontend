@@ -1,4 +1,4 @@
-export const aboutText=`About WealthoraCare Solutions
+export const aboutText=`ABOUT WEALTHORACARE SOLUTIONS
 
 Wealth • Wellness • Support
 
@@ -22,34 +22,34 @@ Our clients are at the center of what we do. We aim to provide clear information
 
 Whether you are looking for financial assistance, exploring investment opportunities, seeking wellness support, or applying for a loan, our goal is to make the process straightforward, professional, and centered around your needs.
 
-Our Commitment
+OUR COMMITMENT
 
 At WelthoraCare Solutions, we believe that everyone deserves access to opportunities and support that can help them move forward. We are committed to building relationships based on transparency, professionalism, responsibility, and trust.
 
 WealthoraCare Solutions — Wealth • Wellness • Support.`
 export const  serviceText=`
-Our Services
+OUR SERVICES
 
-Financial Support
+FINANCIAL SUPPORT
 Explore financial solutions designed around eligible clients'needs.
 
-Loans
+LOANS
 
 Apply for financing subject to eligibility, verification, approval, terms, and applicable requirements.
-Investments
+INVESTMENTS
 Access information and services relating to investment opportunities, where available and permitted.
 
-Digital Assets
+DIGITAL ASSETS
 
 Learn about digital assets, including cryptocurrency, alongside traditional financial assets.
-Wellness Support
+WELLNESS SUPPORT
 Access wellness resources and support designed around individual needs.
 
-Client Support
+CLIENT SUPPORT
 
 Get assistance with questions, applications, account information, and available services.
 
-Our Mission 
+OUR MISSION 
 
 Our mission is to connect people with responsible financial solutions, wellness resources, and dependable support that can help them move forward with greater confidence.`
 export const faqs=[
@@ -67,35 +67,35 @@ export const faqs=[
 {q:"What countries/states do you serve?", a:"Services are available worldwide"}
 ]
 export const servicesAndExplanations=[
-    {text:"Medical Support",
+    {text:"MEDICAL SUPPORT",
 
 explanation:"WelthoraCare Solutions provides assistance and resources intended to help eligible clients navigate medical and healthcare-related needs. Support may include information about available healthcare resources, assistance with understanding applicable programs, and guidance on accessing appropriate services. Availability and eligibility depend on the specific program and applicable requirements."
 },
-{text:"COVID-19 Benefits",
+{text:"COVID-19 BENEFITS",
 
 explanation:"We provide information and support relating to COVID-19-related healthcare resources and benefits that may be available to eligible individuals. This may include assistance understanding available healthcare programs, testing or treatment resources, and other applicable support. Benefits vary according to eligibility, location, program availability, and applicable regulations."
 },
-{text:"Investments",
+{text:"INVESTMENTS",
 
 explanation:"Our investment services are designed to provide eligible clients with access to investment-related information, resources, and opportunities where permitted by applicable laws and regulations. Investment products involve risk, and the value of investments can increase or decrease."
 },
-{text:"Essential Health Benefits",
+{text:"ESSENTIAL HEALTH BENEFITS",
 
 explanation:"We help eligible clients understand and access information concerning essential health benefit categories, which can include services such as preventive care, emergency services, hospitalization, prescription drugs, mental health and substance-use services, and other covered healthcare services. Actual coverage depends on the applicable health plan and its terms."
 },
-{text:"One-Health Protection",
+{text:"ONE-HEALTH PROTECTION",
 
 explanation:"We provide information and support to help eligible clients understand health protection resources, available benefits, and the requirements for accessing appropriate healthcare services. Availability and eligibility depend on the applicable program and its terms."
 },
-{text:"Health Insurance",
+{text:"HEALTH INSURANCE",
 
 explanation:"We provide information and assistance relating to health insurance options and coverage for eligible clients. Our support may help clients understand available plans, coverage features, enrollment considerations, and applicable requirements. WelthoraCare Solutions does not represent that every client will qualify for coverage or that any particular benefit is guaranteed."
 },
 
-{text:"Cash Contribution",
+{text:"CASH CONTRIBUTION",
 explanation:"Our cash-contribution service is intended to provide eligible clients with information about available financial contribution or assistance programs. Where a contribution is offered, eligibility, amount, conditions, documentation, and approval requirements will depend on the specific program. Cash assistance is not automatically available to every applicant."
 },
-{text:"Travel & Expense",
+{text:"TRAVEL & EXPENSE",
 
 explanation:"We provide support relating to eligible travel and expense needs, which may include assistance with understanding applicable travel benefits, expense-support programs, documentation requirements, and reimbursement procedures. Eligibility, covered expenses, limits, and reimbursement conditions depend on the applicable program or arrangement."
 }]

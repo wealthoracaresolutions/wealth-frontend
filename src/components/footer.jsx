@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
+// hi
 import {
   FaFacebookF,
   FaTwitter,
@@ -152,7 +153,7 @@ const Footer = () => {
               className="d-block text-decoration-none"
               style={{ color: "#bdc3c7" }}
             >
-              medicalhealthassets@gmail.com
+              wealthoracares@gmail.com
             </a>
             <p>+1 (229) 946-0904</p>
             <div id="google_translate_element"></div>

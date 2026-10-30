@@ -96,13 +96,13 @@ const About = () => {
   return (
     <Container id="about-us">
       <TextContainer id="about-text">
-        <Title>About Us</Title>
+        <Title>ABOUT US</Title>
         <Description>
           At <Highlight>Wealthoracaresolutions</Highlight>, we are dedicated to enhancing your well-being and financial stability.
           Our wide range of services, including <Highlight>medical support</Highlight>, <Highlight>investment plans</Highlight>, 
           and <Highlight>health insurance</Highlight>, ensures that you are covered in every aspect of life.
         </Description>
-        <Button href="#services">Learn More</Button>
+        <Button href="#services">LEARN MORE</Button>
       </TextContainer>
       <ImageContainer id="about-image">
         <Image src={aboutImage} alt="About Us" />

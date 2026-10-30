@@ -32,7 +32,7 @@ const ApprovedDeposits = () => {
           <div className="col-lg-6 px-5 text-end">
             <small>
               <i className="fa fa-envelope text-primary me-2"></i>
-              medicalhealthassets@gmail.com
+              wealthoracares@gmail.com
             </small>
           </div>
         </div>

@@ -116,9 +116,9 @@ const HealthCenter = () => {
         <AboutLayout id="about">
           <Background src={doctorBG} alt="" aria-hidden="true" />
           <AboutIntro>
-            <SectionLabel>Who we are</SectionLabel>
-            <SectionTitle>About Us</SectionTitle>
-            <Button href="#services">Explore our services</Button>
+            <SectionLabel>WHO WE ARE</SectionLabel>
+            <SectionTitle>ABOUT US</SectionTitle>
+            <Button href="#services">EXPLORE OUR SERVICES</Button>
           </AboutIntro>
           <AboutDescription>
             {aboutText.replace(/^About WealthoraCare Solutions\s*/, "")}
