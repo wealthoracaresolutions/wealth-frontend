@@ -26,17 +26,31 @@ import { developmentApiEntryPoint } from "./register";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAppStats, setAppStats } from "../state/slices/appSlice";
 import Header from "../components/header";
+import { Link } from "react-router-dom";
 
 
 const AdminPage = () => {
   const dispatch= useDispatch()
   const  appStats= useSelector(selectAppStats)
   const [temporaryAppStats, setTemporaryStats]=useState({allUsers:[],allInvestments:[],allWithdrawals:[],})
+  const [notifications, setNotifications] = useState([])
   const [hasFetched,setHasFetched]= useState(false)
 
   
   console.log({appStats})
   useEffect(()=>{
+    const token = localStorage.getItem("support_token");
+    const loadNotifications = () => {
+      fetchData(
+        `${developmentApiEntryPoint}/users/notifications`,
+        (data) => setNotifications(data.result),
+        (message) => console.error("Could not load admin notifications:", message),
+        "GET",
+        undefined,
+        token
+      );
+    };
+
     fetchData(
       `${developmentApiEntryPoint}/admin/getstats`,
       (data)=>{
@@ -50,6 +64,9 @@ const AdminPage = () => {
         window.location.reload()
       }
     )
+    loadNotifications();
+    const notificationRefresh = window.setInterval(loadNotifications, 30000);
+    return () => window.clearInterval(notificationRefresh);
   },[])
   const {allUsers,allInvestments,allWithdrawals}=temporaryAppStats
 const pendingRequests=[...allInvestments.filter(x=>x.status==="pending"),...allWithdrawals.filter(x=>x.status==="pending")]
@@ -95,6 +112,34 @@ const pendingRequests=[...allInvestments.filter(x=>x.status==="pending"),...allW
 
           {/* Repeat similar card structure for other stats */}
         </Row>
+
+        <Card className="mt-4 shadow-sm border-0">
+          <Card.Header className="d-flex justify-content-between align-items-center">
+            <h5 className="mb-0">Notifications</h5>
+            <span>{notifications.filter((notification) => notification.registrationId).length} pending registrations</span>
+          </Card.Header>
+          <Card.Body>
+            {notifications.length ? notifications.map((notification) => (
+              <div
+                key={notification._id || notification.createdAt}
+                className="border-bottom py-3"
+              >
+                <div className="d-flex justify-content-between align-items-start gap-3">
+                  <strong>{notification.title}</strong>
+                  <small className="text-muted">
+                    {new Date(notification.createdAt).toLocaleString()}
+                  </small>
+                </div>
+                <p className="mb-2 mt-1">{notification.message}</p>
+                {notification.registrationId && (
+                  <Button as={Link} to="/admin/users" size="sm" variant="success">
+                    Review registrations
+                  </Button>
+                )}
+              </div>
+            )) : <p className="text-muted mb-0">No new notifications.</p>}
+          </Card.Body>
+        </Card>
         
       </Container>
       <Footer />

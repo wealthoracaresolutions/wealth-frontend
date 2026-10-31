@@ -80,6 +80,7 @@ const ButtonGroup = styled.div`
 const Dashboard = () => {
   const navigate = useNavigate()
   const [stats,setStats]= useState({})
+  const [notifications, setNotifications] = useState([])
   const [latestSignal, setLatestSignal] = useState(null)
   console.log(stats)
   const userIsLogged= useSelector(selectIsLogged);
@@ -113,6 +114,19 @@ const Dashboard = () => {
         undefined,
         token
       )
+      const loadNotifications = () => {
+        fetchData(
+          `${developmentApiEntryPoint}/users/notifications`,
+          (data) => setNotifications(data.result),
+          (message) => console.error("Could not load notifications:", message),
+          "GET",
+          undefined,
+          token
+        )
+      };
+      loadNotifications();
+      const notificationRefresh = window.setInterval(loadNotifications, 30000);
+      return () => window.clearInterval(notificationRefresh);
     }
     
   },[])
@@ -201,6 +215,28 @@ const Dashboard = () => {
             ))}
           </Row>
         </ContentCon>
+      </Container>
+
+      <Container className="cardContent">
+        <Card className="mb-4 shadow-sm border-0">
+          <Card.Body>
+            <h3 className="mb-3">Notifications</h3>
+            {notifications.length ? notifications.map((notification) => (
+              <div
+                key={notification._id || notification.createdAt}
+                className="border-bottom py-3"
+              >
+                <div className="d-flex justify-content-between align-items-start gap-3">
+                  <strong>{notification.title}</strong>
+                  <small className="text-muted">
+                    {new Date(notification.createdAt).toLocaleString()}
+                  </small>
+                </div>
+                <p className="mb-0 mt-1">{notification.message}</p>
+              </div>
+            )) : <p className="text-muted mb-0">You have no notifications yet.</p>}
+          </Card.Body>
+        </Card>
       </Container>
 
       {/* Total Stats Section */}

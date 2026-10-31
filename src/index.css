@@ -39,25 +39,33 @@ button:hover {
   background-color: var(--primary-green-dark);
 }
 .fadeinRight {
-  opacity: 0;
-  transform: translateX(-100%);
-  transition: all 1s ease;
+  transition: opacity 1s ease, transform 1s ease;
 }
 
 .fadeinLeft {
-  opacity: 0;
-  transform: translateX(100%);
-  transition: all 1s ease;
+  transition: opacity 1s ease, transform 1s ease;
 }
 .fadeinUp {
-  opacity: 0;
-  transform: translateY(100%);
-  transition: all 1s ease;
+  transition: opacity 1s ease, transform 1s ease;
 }
 .fadeinDown {
+  transition: opacity 1s ease, transform 1s ease;
+}
+.fadeinRight.aos-pending {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+.fadeinLeft.aos-pending {
+  opacity: 0;
+  transform: translateX(100%);
+}
+.fadeinUp.aos-pending {
+  opacity: 0;
+  transform: translateY(100%);
+}
+.fadeinDown.aos-pending {
   opacity: 0;
   transform: translateY(-100%);
-  transition: all 1s ease;
 }
 .visible {
   transform: translateX(0%) translateY(0%);
